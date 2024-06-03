@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { schoolList, School } from './educationData.js';
+import { jobList, Job } from './jobData.js';
 
-export default function EducationInfo() {
-  const [schools, setSchools] = useState(schoolList);
+export default function ProfExp() {
+  const [jobs, setJobs] = useState(jobList);
   const [showButton, setShowButton] = useState(false);
   return (
-    <section>
+    <section className="prof-exp">
       <div
         className="section-header"
         onMouseOver={() => setShowButton(true)}
@@ -13,14 +13,11 @@ export default function EducationInfo() {
       >
         <hr />
         <div className="section-title">
-          <h2>Education</h2>
+          <h2>Professional Experience</h2>
           <button
             onClick={() => {
-              console.log(schoolList);
-              setSchools([
-                ...schoolList,
-                new School('School Name', '', '', ''),
-              ]);
+              console.log(jobList);
+              setJobs([...jobList, new Job('job Name', '', '', '')]);
             }}
             style={{ display: showButton === false ? 'none' : 'block' }}
           >
@@ -29,20 +26,23 @@ export default function EducationInfo() {
         </div>
         <hr />
       </div>
-      {schools.map((school) => (
-        <Education
-          key={school.id}
-          schoolName={school.name}
-          degree={school.degree}
-          gpa={school.gpa}
-          graduationDate={school.graduationDate}
-        />
-      ))}
+      <div className="item-list">
+        {jobs.map((job) => (
+          <Employment
+            key={job.id}
+            company={job.company}
+            position={job.position}
+            description={job.description}
+            startDate={job.startDate}
+            endDate={job.endDate}
+          />
+        ))}
+      </div>
     </section>
   );
 }
 
-function Education({ schoolName, degree, gpa, graduationDate }) {
+function Employment({ company, position, description, startDate, endDate }) {
   const [editMode, setEditMode] = useState(false);
   const [showButton, setShowButton] = useState(false);
 
@@ -54,8 +54,8 @@ function Education({ schoolName, degree, gpa, graduationDate }) {
         onMouseLeave={() => setShowButton(false)}
       >
         <HeaderField
-          title={schoolName}
-          initState={schoolName}
+          title={company}
+          initState={company}
           inputVisible={editMode}
         />
         <button
@@ -65,11 +65,19 @@ function Education({ schoolName, degree, gpa, graduationDate }) {
           {!editMode ? 'Edit' : 'Submit'}
         </button>
       </div>
-      <InfoField title="Degree" initState={degree} inputVisible={editMode} />
-      <InfoField title="GPA" initState={gpa} inputVisible={editMode} />
       <InfoField
-        title="Graduated"
-        initState={graduationDate}
+        title="Position"
+        initState={position}
+        inputVisible={editMode}
+      />
+      <InfoField
+        title="Description"
+        initState={description}
+        inputVisible={editMode}
+      />
+      <InfoField
+        title="Employment Date"
+        initState={startDate}
         inputVisible={editMode}
       />
     </div>
@@ -91,11 +99,10 @@ function HeaderField({ title, initState, inputVisible }) {
   );
 }
 
-function InfoField({ title, initState, inputVisible }) {
+function InfoField({ initState, inputVisible }) {
   const [input, setInput] = useState(initState);
   return (
     <div className="info-field">
-      {/* <h3>{title}</h3> */}
       <p style={{ display: inputVisible ? 'none' : 'block' }}>{input}</p>
       <input
         type="text"

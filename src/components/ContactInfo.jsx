@@ -1,18 +1,29 @@
 import { useState } from 'react';
-import '../styles/App.css';
+import '../styles/main.css';
 
-export default function GeneralInfo() {
+export default function ContactInfo() {
   const [editMode, setEditMode] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
   return (
     <section>
-      <div>
-        <h1>General Information</h1>
-        <button onClick={() => setEditMode(!editMode)}>
-          {!editMode ? 'Edit' : 'Submit'}
-        </button>
+      <div
+        className="section-header"
+        onMouseOver={() => setShowButton(true)}
+        onMouseLeave={() => setShowButton(false)}
+      >
+        <hr />
+        <div className="section-title">
+          <h2>Contact</h2>
+          <button
+            style={{ display: showButton === false ? 'none' : 'block' }}
+            onClick={() => setEditMode(!editMode)}
+          >
+            {!editMode ? 'Edit' : 'Submit'}
+          </button>
+        </div>
+        <hr />
       </div>
-      <InfoField title="Name" initState="Ben Long" inputVisible={editMode} />
       <InfoField
         title="Email"
         initState="someemail@gmail.com"
