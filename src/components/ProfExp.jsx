@@ -1,11 +1,18 @@
 import { useState } from 'react';
-import { jobList, Job } from './jobData.js';
+import { jobList, Job, JobDesc } from './jobData.js';
+import Icon from '@mdi/react';
+import {
+  mdiTextBoxEdit,
+  mdiCheckBold,
+  mdiPlusThick,
+  mdiMinusThick,
+} from '@mdi/js';
 
 export default function ProfExp() {
   const [jobs, setJobs] = useState(jobList);
   const [showButton, setShowButton] = useState(false);
   return (
-    <section className="prof-exp">
+    <section className="flex-column-gap-1 prof-exp">
       <div
         className="section-header"
         onMouseOver={() => setShowButton(true)}
@@ -13,20 +20,52 @@ export default function ProfExp() {
       >
         <hr />
         <div className="section-title">
-          <h2>Professional Experience</h2>
-          <button
-            onClick={() => {
-              console.log(jobList);
-              setJobs([...jobList, new Job('job Name', '', '', '')]);
-            }}
-            style={{ display: showButton === false ? 'none' : 'block' }}
-          >
-            +
-          </button>
+          <h2 className="section-header">Professional Experience</h2>
+          <div className="button-container">
+            <button
+              className="desc-remove-but"
+              onClick={() => {
+                const newList = jobs.slice(0, -1);
+                setJobs(newList);
+              }}
+              style={{
+                visibility: showButton === false ? 'hidden' : 'visible',
+              }}
+            >
+              <Icon
+                className="interactive-icon"
+                path={mdiMinusThick}
+                size={1.25}
+              />
+            </button>
+            <button
+              onClick={() => {
+                setJobs([
+                  ...jobs,
+                  new Job(
+                    'Job Name',
+                    'Position',
+                    [''],
+                    'Employment Start Date',
+                    'Employment End Date',
+                  ),
+                ]);
+              }}
+              style={{
+                visibility: showButton === false ? 'hidden' : 'visible',
+              }}
+            >
+              <Icon
+                className="interactive-icon"
+                path={mdiPlusThick}
+                size={1.25}
+              />
+            </button>
+          </div>
         </div>
         <hr />
       </div>
-      <div className="item-list">
+      <div>
         {jobs.map((job) => (
           <Employment
             key={job.id}
@@ -47,12 +86,12 @@ function Employment({ company, position, description, startDate, endDate }) {
   const [showButton, setShowButton] = useState(false);
 
   return (
-    <div>
-      <div
-        className="section-title"
-        onMouseOver={() => setShowButton(true)}
-        onMouseLeave={() => setShowButton(false)}
-      >
+    <div
+      className="flex-column-gap-2"
+      onMouseOver={() => setShowButton(true)}
+      onMouseLeave={() => (editMode ? null : setShowButton(false))}
+    >
+      <div className="section-title">
         <HeaderField
           title={company}
           initState={company}
@@ -60,35 +99,52 @@ function Employment({ company, position, description, startDate, endDate }) {
         />
         <button
           onClick={() => setEditMode(!editMode)}
-          style={{ display: showButton === false ? 'none' : 'block' }}
+          style={{ visibility: showButton === false ? 'hidden' : 'visible' }}
         >
-          {!editMode ? 'Edit' : 'Submit'}
+          {!editMode ? (
+            <Icon
+              className="interactive-icon"
+              path={mdiTextBoxEdit}
+              size={1.25}
+            />
+          ) : (
+            <Icon
+              className="interactive-icon"
+              path={mdiCheckBold}
+              size={1.25}
+            />
+          )}
         </button>
       </div>
+      <InfoField
+        title="Date"
+        initState={startDate + ' to ' + endDate}
+        inputVisible={editMode}
+      />
       <InfoField
         title="Position"
         initState={position}
         inputVisible={editMode}
       />
-      <InfoField
-        title="Description"
+      <DescList
         initState={description}
         inputVisible={editMode}
-      />
-      <InfoField
-        title="Employment Date"
-        initState={startDate}
-        inputVisible={editMode}
+        showButton={showButton}
       />
     </div>
   );
 }
 
-function HeaderField({ title, initState, inputVisible }) {
+function HeaderField({ initState, inputVisible }) {
   const [input, setInput] = useState(initState);
   return (
     <div className="info-field">
-      <h2 style={{ display: inputVisible ? 'none' : 'block' }}>{title}</h2>
+      <h2
+        className="section-name"
+        style={{ display: inputVisible ? 'none' : 'block' }}
+      >
+        {input}
+      </h2>
       <input
         type="text"
         value={input}
@@ -111,5 +167,62 @@ function InfoField({ initState, inputVisible }) {
         style={{ display: inputVisible ? 'block' : 'none' }}
       />
     </div>
+  );
+}
+
+function DescList({ initState, inputVisible, showButton }) {
+  const [descList, setDescList] = useState(initState);
+
+  const addItem = () => {
+    const newItem = new JobDesc(descList, 'Job Description');
+    setDescList([...descList, newItem]);
+  };
+
+  const removeItem = () => {
+    const newList = descList.slice(0, -1);
+    setDescList(newList);
+  };
+
+  const handleInputChange = (id, value) => {
+    const updatedDescList = descList.map((item) =>
+      id === item.id ? { ...item, description: value } : item,
+    );
+    setDescList(updatedDescList);
+  };
+
+  return (
+    <>
+      <ul className="flex-column-gap-2">
+        {descList.map((item) => (
+          <li key={item.id}>
+            <span style={{ display: inputVisible ? 'none' : 'inline' }}>
+              {item.description}
+            </span>
+            <input
+              type="text"
+              value={item.description}
+              onChange={(e) => handleInputChange(item.id, e.target.value)}
+              style={{ display: inputVisible ? 'inline' : 'none' }}
+            />
+          </li>
+        ))}
+      </ul>
+      <div className="button-container">
+        <button
+          className="desc-remove-but"
+          onClick={removeItem}
+          style={{ visibility: showButton === false ? 'hidden' : 'visible' }}
+        >
+          <Icon className="interactive-icon" path={mdiMinusThick} size={1.25} />
+        </button>
+        <button
+          className="desc-add-but"
+          onClick={addItem}
+          style={{ visibility: showButton === false ? 'hidden' : 'visible' }}
+        >
+          <Icon className="interactive-icon" path={mdiPlusThick} size={1.25} />
+        </button>
+      </div>
+    </>
   );
 }

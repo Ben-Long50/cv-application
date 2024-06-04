@@ -1,49 +1,102 @@
 import { useState } from 'react';
 import '../styles/main.css';
+import Icon from '@mdi/react';
+import {
+  mdiEmail,
+  mdiPhone,
+  mdiGithub,
+  mdiLinkedin,
+  mdiTextBoxEdit,
+  mdiCheckBold,
+} from '@mdi/js';
 
 export default function ContactInfo() {
   const [editMode, setEditMode] = useState(false);
   const [showButton, setShowButton] = useState(false);
 
   return (
-    <section>
-      <div
-        className="section-header"
-        onMouseOver={() => setShowButton(true)}
-        onMouseLeave={() => setShowButton(false)}
-      >
+    <section
+      className="flex-column-gap-1"
+      onMouseOver={() => setShowButton(true)}
+      onMouseLeave={() => (editMode ? null : setShowButton(false))}
+    >
+      <div className="section-header">
         <hr />
         <div className="section-title">
-          <h2>Contact</h2>
+          <h2 className="section-header">Contact</h2>
           <button
-            style={{ display: showButton === false ? 'none' : 'block' }}
+            style={{ visibility: showButton === false ? 'hidden' : 'visible' }}
             onClick={() => setEditMode(!editMode)}
           >
-            {!editMode ? 'Edit' : 'Submit'}
+            {!editMode ? (
+              <Icon
+                className="interactive-icon"
+                path={mdiTextBoxEdit}
+                size={1.25}
+              />
+            ) : (
+              <Icon
+                className="interactive-icon"
+                path={mdiCheckBold}
+                size={1.25}
+              />
+            )}
           </button>
         </div>
         <hr />
       </div>
-      <InfoField
-        title="Email"
-        initState="someemail@gmail.com"
-        inputVisible={editMode}
-      />
-      <InfoField
-        title="Phone Number"
-        initState="(909) 555-5555"
-        inputVisible={editMode}
-      />
+      <div className="flex-column-gap-2">
+        <InfoField
+          icon={mdiEmail}
+          initState="professional-email@gmail.com"
+          inputVisible={editMode}
+        />
+        <InfoField
+          icon={mdiPhone}
+          initState="(555) 555-5555"
+          inputVisible={editMode}
+        />
+        <LinkField
+          title="Github"
+          icon={mdiGithub}
+          initState="https://github.com/Ben-Long50"
+          inputVisible={editMode}
+        />
+        <LinkField
+          title="Linkedin"
+          icon={mdiLinkedin}
+          initState="https://www.linkedin.com/in/ben-long-4ba566129/"
+          inputVisible={editMode}
+        />
+      </div>
     </section>
   );
 }
 
-function InfoField({ title, initState, inputVisible }) {
+function InfoField({ icon, initState, inputVisible }) {
   const [input, setInput] = useState(initState);
   return (
     <div className="info-field">
-      <h3>{title}</h3>
+      <Icon path={icon} size={1.25} />
       <p style={{ display: inputVisible ? 'none' : 'block' }}>{input}</p>
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        style={{ display: inputVisible ? 'block' : 'none' }}
+      />
+    </div>
+  );
+}
+
+function LinkField({ title, icon, initState, inputVisible }) {
+  const [input, setInput] = useState(initState);
+  return (
+    <div className="info-field">
+      <Icon path={icon} size={1.25} />
+      <a style={{ display: inputVisible ? 'none' : 'block' }} href={initState}>
+        {title}
+      </a>
       <input
         type="text"
         value={input}

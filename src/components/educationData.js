@@ -17,7 +17,7 @@ function generateId() {
 
 new School(
   'California Baptist University',
-  'Bachelors of Science in Mechanical Engineering',
-  '3.5 Cum Laude',
+  'BS in Mechanical Engineering',
+  '3.5',
   'May 3, 2018',
 );

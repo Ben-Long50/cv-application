@@ -1,0 +1,31 @@
+.header {
+  grid-column: 1 / 4;
+  grid-row: 1;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-right: 2rem;
+}
+
+.header-name {
+  font-weight: 500;
+  font-size: 3.5rem;
+}
+
+.header-title {
+  font-size: 1rem;
+}
+
+.profile-img {
+  background-image: url('./public/ben_long_small.jpeg');
+  background-position: center;
+  background-size: cover;
+  height: 150px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: rgb(155, 155, 155);
+  margin-left: auto;
+}

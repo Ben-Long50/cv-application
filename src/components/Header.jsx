@@ -1,5 +1,8 @@
 import { useState } from 'react';
+import Icon from '@mdi/react';
+import { mdiTextBoxEdit, mdiCheckBold } from '@mdi/js';
 import '../styles/main.css';
+import '../styles/header.css';
 
 export default function Header() {
   const [editMode, setEditMode] = useState(false);
@@ -9,7 +12,7 @@ export default function Header() {
     <section
       className="header"
       onMouseOver={() => setShowButton(true)}
-      onMouseLeave={() => setShowButton(false)}
+      onMouseLeave={() => (editMode ? null : setShowButton(false))}
     >
       <div className="section-title">
         <div className="header-info">
@@ -24,13 +27,27 @@ export default function Header() {
             classList={'header-title'}
           />
         </div>
-        <div className="profile-img"></div>
         <button
-          style={{ display: showButton === false ? 'none' : 'inline' }}
+          style={{
+            visibility: showButton === false ? 'hidden' : 'visible',
+          }}
           onClick={() => setEditMode(!editMode)}
         >
-          {!editMode ? 'Edit' : 'Submit'}
+          {!editMode ? (
+            <Icon
+              className="interactive-icon"
+              path={mdiTextBoxEdit}
+              size={1.25}
+            />
+          ) : (
+            <Icon
+              className="interactive-icon"
+              path={mdiCheckBold}
+              size={1.25}
+            />
+          )}
         </button>
+        <div className="profile-img"></div>
       </div>
     </section>
   );
@@ -39,8 +56,13 @@ export default function Header() {
 function InfoField({ title, inputVisible, classList }) {
   const [input, setInput] = useState(title);
   return (
-    <div className={classList}>
-      <h1 style={{ display: inputVisible ? 'none' : 'block' }}>{input}</h1>
+    <div>
+      <h1
+        className={classList}
+        style={{ display: inputVisible ? 'none' : 'block' }}
+      >
+        {input}
+      </h1>
       <input
         type="text"
         value={input}
