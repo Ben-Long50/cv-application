@@ -126,6 +126,9 @@ h2.section-header {
 }
 
 @media (max-width: 680px) {
+  body {
+    margin-top: 0;
+  }
   .main-layout {
     display: flex;
     flex-direction: column;
