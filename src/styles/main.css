@@ -49,6 +49,7 @@ input {
   border-radius: 4px;
   width: 100%;
   border: 1px solid var(--text-color);
+  background-color: rgb(247, 247, 247);
 }
 
 h2.section-header {
