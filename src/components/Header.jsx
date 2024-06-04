@@ -14,7 +14,7 @@ export default function Header() {
       onMouseOver={() => setShowButton(true)}
       onMouseLeave={() => (editMode ? null : setShowButton(false))}
     >
-      <div className="section-title">
+      <div className="header-container">
         <div className="header-info">
           <InfoField
             title="Ben Long"

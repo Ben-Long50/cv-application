@@ -14,8 +14,10 @@ body {
 
 body {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+  margin-top: 5rem;
 }
 
 h1,
@@ -120,4 +122,13 @@ h2.section-header {
 
 .interactive-icon:hover {
   background-color: rgb(197, 197, 197);
+}
+
+@media (max-width: 680px) {
+  .main-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 2rem;
+  }
 }
