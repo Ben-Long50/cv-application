@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'work-sans';
-  src: url('./public/Work-sans.ttf');
+  src: url('../public/Work-sans.ttf');
 }
 
 html,

@@ -27,7 +27,7 @@
 }
 
 .profile-img {
-  background-image: url('./public/ben_long_small.jpeg');
+  background-image: url('../public/ben_long_small.jpeg');
   background-position: center;
   background-size: cover;
   height: 150px;
